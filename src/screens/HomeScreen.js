@@ -8,21 +8,69 @@ import {
   Image,
 } from 'react-native';
 import axios from 'axios';
+import {
+  Avatar,
+  Button,
+  Card,
+  Title,
+  Paragraph,
+  ActivityIndicator,
+  TouchableRipple
+} from 'react-native-paper';
 
 import {texts} from '../styles/textStyles';
-import { SectionList } from '../data/sectionHeader'
+import {SectionList} from '../data/sectionHeader';
+
+const LeftContent = props => (
+  <Avatar.Icon {...props} icon="newspaper-variant" />
+);
 
 const HomeScreen = () => {
   const [newsData, setNewsData] = useState();
+  const [section, setSection] = useState('home');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setDefaultData();
+  }, []);
+
+  const setDefaultData = () => {
+    setLoading(true);
     axios
       .get(
-        'https://api.nytimes.com/svc/topstories/v2/arts.json?api-key=APNbH591pkwJSw3dPdXFIl7Psn1ZAaKL',
+        'https://api.nytimes.com/svc/topstories/v2/home.json?api-key=APNbH591pkwJSw3dPdXFIl7Psn1ZAaKL',
       )
       .then(function (response) {
         // handle success
         setNewsData(response.data.results);
+        // console.log('newsData', newsData);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  };
+
+  const fetchSection = section => {
+    // console.log(section);
+    const sectionURL =
+      'https://api.nytimes.com/svc/topstories/v2/' +
+      section +
+      '.json?api-key=APNbH591pkwJSw3dPdXFIl7Psn1ZAaKL';
+    // console.log('sectionURL', sectionURL);
+    setLoading(true);
+    axios
+      .get(sectionURL)
+      .then(function (response) {
+        // handle success
+        // console.log(response.data.results);
+        setNewsData(response.data.results);
+        setLoading(false);
+        setSection(section)
         // console.log('newsData', newsData);
       })
       .catch(function (error) {
@@ -32,50 +80,83 @@ const HomeScreen = () => {
       .then(function () {
         // always executed
       });
-  });
+  };
 
-  const renderItem = ({item}) => (
-    <TouchableOpacity
-      onPress={() => console.log('item.uri', item.uri)}
-      style={styles.NewsTile}>
-      {/* News Tiles */}
-      <View style={styles.NewsTileLeft}>
-        <Image
-          source={{uri: item.multimedia[1].url}}
-          style={{
-            height: 100,
-            width: 100,
-          }}
-        />
-      </View>
-      <View style={styles.NewsTileRight}>
-        <Text style={[texts.b18, {flexWrap: 'wrap'}]}>{item.title}</Text>
-        <View style={[]}>
-          <Text style={texts.b12}>{item.byline}</Text>
-          <Text style={texts.b12}>Published: {item.created_date}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
+  const renderItem = ({item}) => {
+    return (
+      <TouchableRipple onPress={() => console.log('Code Reachable')} style={styles.Card}>
+        <Card>
+          <Card.Content>
+            <Title>{item.title}</Title>
+          </Card.Content>
+          <Card.Title
+            titleStyle={{fontSize: 16}}
+            title={item.byline}
+            subtitle={'Published:' + item.published_date}
+            left={LeftContent}
+          />
+          <View style={{width: '100%', alignItems: 'center'}}>
+            {item.multimedia !== null && (
+              <Card.Cover
+                style={{width: '95%'}}
+                source={{uri: item.multimedia[0].url}}
+              />
+            )}
+            {item.multimedia === null && (
+              <Card.Cover
+                style={{width: '95%'}}
+                source={{uri: 'https://picsum.photos/200/300'}}
+              />
+            )}
+          </View>
+          <Card.Content>
+            <Paragraph>{item.abstract}</Paragraph>
+          </Card.Content>
+        </Card>
+      </TouchableRipple>
+    );
+  };
 
   const renderItem2 = ({item}) => (
-      <View style={styles.SectionTile}>
-          <Text style={texts.b12}>{item.title}</Text>
-      </View>
-  )
+    <View style={[]}>
+      {item.label === section && (
+        <TouchableRipple
+          onPress={() => {
+            fetchSection(item.label);
+          }}
+          style={styles.SectionTileUnselected}>
+          <Text style={texts.w16}>{item.title}</Text>
+        </TouchableRipple>
+      )}
+      {!(item.label === section) && (
+        <TouchableRipple
+          onPress={() => {
+            fetchSection(item.label);
+          }}
+          style={styles.SectionTileSelected}>
+          <Text style={texts.b16}>{item.title}</Text>
+        </TouchableRipple>
+      )}
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       {/* Section */}
       <View style={styles.SectionSelect}>
         <FlatList
-            showsHorizontalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           horizontal
           data={SectionList}
           renderItem={item => renderItem2(item)}
           keyExtractor={item => item.id}
         />
       </View>
+      {loading && (
+        <View style={styles.Activity}>
+          <ActivityIndicator animating={true} size={80} />
+        </View>
+      )}
 
       <FlatList
         data={newsData}
@@ -98,19 +179,31 @@ const styles = StyleSheet.create({
   SectionSelect: {
     height: 70,
     width: '100%',
-    backgroundColor: '#989',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  SectionTile: {
+  SectionTileSelected: {
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
     width: 120,
     borderRadius: 30,
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
+    borderWidth: 3,
+    borderColor: '#323aa8',
     marginVertical: 10,
-    marginLeft: 10
+    marginLeft: 10,
+  },
+  SectionTileUnselected: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    width: 120,
+    borderRadius: 30,
+    backgroundColor: '#323aa8',
+    marginVertical: 10,
+    marginLeft: 10,
   },
 
   //   News Tiles
@@ -138,6 +231,21 @@ const styles = StyleSheet.create({
     height: 120,
     paddingVertical: 10,
   },
+
+  // Card
+  Card: {
+    // height: 500,
+    width: '100%',
+    marginTop: 10,
+  },
+
+  // Activity
+  Activity: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    paddingTop: 50,
+  },
 });
 
 {
@@ -150,3 +258,32 @@ style={{
 }}
 onPress={() => console.log('newsData', newsData)}></TouchableOpacity> */
 }
+
+// {/* News Tiles */}
+// <View style={styles.NewsTileLeft}>
+//   {item.multimedia !== null && (
+//     <Image
+//       source={{uri: item.multimedia[1].url}}
+//       style={{
+//         height: 100,
+//         width: 100,
+//       }}
+//     />
+//   )}
+//   {item.multimedia === null && (
+//     <Image
+//       source={{uri: 'https://picsum.photos/200/300'}}
+//       style={{
+//         height: 100,
+//         width: 100,
+//       }}
+//     />
+//   )}
+// </View>
+// <View style={styles.NewsTileRight}>
+//   <Text style={[texts.b18, {flexWrap: 'wrap'}]}>{item.title}</Text>
+//   <View style={[]}>
+//     <Text style={texts.b12}>{item.byline}</Text>
+//     <Text style={texts.b12}>Published: {item.created_date}</Text>
+//   </View>
+// </View>

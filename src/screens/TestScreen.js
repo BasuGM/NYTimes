@@ -27,10 +27,6 @@ const TestScreen = () => (
           effects of the surging demand for ivermectin, a deworming drug.
         </Paragraph>
       </Card.Content>
-      {/* <Card.Actions>
-      <Button>Cancel</Button>
-      <Button>Ok</Button>
-    </Card.Actions> */}
     </Card>
 
     <Card>

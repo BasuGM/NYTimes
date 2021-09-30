@@ -15,20 +15,24 @@ import {
   Title,
   Paragraph,
   ActivityIndicator,
-  TouchableRipple
+  TouchableRipple,
+  TextInput,
 } from 'react-native-paper';
+import {Icon} from 'react-native-elements';
 
 import {texts} from '../styles/textStyles';
 import {SectionList} from '../data/sectionHeader';
 
 const LeftContent = props => (
-  <Avatar.Icon {...props} icon="newspaper-variant" />
+  <Avatar.Icon {...props} backgroundColor="#323aa8" icon="newspaper-variant" />
 );
 
 const HomeScreen = () => {
-  const [newsData, setNewsData] = useState();
+  const [newsData, setNewsData] = useState([]);
   const [section, setSection] = useState('home');
   const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [searchToggle, setSearchToggle] = useState(false);
 
   useEffect(() => {
     setDefaultData();
@@ -70,7 +74,7 @@ const HomeScreen = () => {
         // console.log(response.data.results);
         setNewsData(response.data.results);
         setLoading(false);
-        setSection(section)
+        setSection(section);
         // console.log('newsData', newsData);
       })
       .catch(function (error) {
@@ -82,9 +86,24 @@ const HomeScreen = () => {
       });
   };
 
+  const searchResults = () => {
+    console.log('Code Reachable')
+    // let resArr = [];
+
+    // for (let i = 0; i < newsData.length; i++) {
+    //   if (newsData[i].title.includes(searchText)) {
+    //     resArr.push(newsData[i]);
+    //   }
+    // }
+
+    // setNewsData(resArr);
+  };
+
   const renderItem = ({item}) => {
     return (
-      <TouchableRipple onPress={() => console.log('Code Reachable')} style={styles.Card}>
+      <TouchableRipple
+        onPress={() => console.log('Code Reachable')}
+        style={styles.Card}>
         <Card>
           <Card.Content>
             <Title>{item.title}</Title>
@@ -124,17 +143,21 @@ const HomeScreen = () => {
           onPress={() => {
             fetchSection(item.label);
           }}
-          style={styles.SectionTileUnselected}>
-          <Text style={texts.w16}>{item.title}</Text>
+          style={styles.SectionTileSelected}>
+          <View style={styles.SectionTileSelectedDot}>
+            <Icon name="primitive-dot" type="octicon" color="#fff" size={36} />
+            <Text style={[texts.w16, texts.pl10]}>{item.title}</Text>
+          </View>
         </TouchableRipple>
       )}
       {!(item.label === section) && (
         <TouchableRipple
+          rippleColor="#323aa8"
           onPress={() => {
             fetchSection(item.label);
           }}
-          style={styles.SectionTileSelected}>
-          <Text style={texts.b16}>{item.title}</Text>
+          style={styles.SectionTileUnselected}>
+          <Text style={texts.c16}>{item.title}</Text>
         </TouchableRipple>
       )}
     </View>
@@ -151,10 +174,47 @@ const HomeScreen = () => {
           renderItem={item => renderItem2(item)}
           keyExtractor={item => item.id}
         />
+        <TouchableRipple
+          onPress={() => setSearchToggle(!searchToggle)}
+          style={styles.SearchIcon}>
+          <Icon name="search1" type="antdesign" color="#fff" size={24} />
+        </TouchableRipple>
       </View>
+
+      {searchToggle && (
+        <View style={styles.SearchBar}>
+          <View style={styles.SearchBarInput}>
+            <TextInput
+              mode="outlined"
+              label={'Search ' + section}
+              // style={{borderColor: '#323aa8'}}
+              selectionColor="#323aa8"
+              underlineColor="#323aa8"
+              outlineColor="#323aa8"
+              value={searchText}
+              onChangeText={text => setSearchText(text)}
+            />
+          </View>
+          <Icon
+            onPress={searchResults()}
+            name="search1"
+            type="antdesign"
+            color="#323aa8"
+            size={24}
+          />
+          <Icon
+            onPress={() => setSearchText('')}
+            name="backspace-outline"
+            type="ionicon"
+            color="#323aa8"
+            size={32}
+          />
+        </View>
+      )}
+
       {loading && (
         <View style={styles.Activity}>
-          <ActivityIndicator animating={true} size={80} />
+          <ActivityIndicator color="#323aa8" animating={true} size={80} />
         </View>
       )}
 
@@ -182,8 +242,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
-  SectionTileSelected: {
+  SectionTileUnselected: {
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
@@ -195,7 +256,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginLeft: 10,
   },
-  SectionTileUnselected: {
+  SectionTileSelected: {
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
@@ -204,6 +265,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#323aa8',
     marginVertical: 10,
     marginLeft: 10,
+  },
+  SectionTileSelectedDot: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    paddingLeft: 10,
+    // justifyContent: 'center',
+  },
+  SearchIcon: {
+    width: 50,
+    height: 50,
+    marginHorizontal: 10,
+    backgroundColor: '#323aa8',
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  SearchBar: {
+    width: '90%',
+    // height: 200,
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  SearchBarInput: {
+    width: '80%',
   },
 
   //   News Tiles
@@ -247,43 +335,3 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
 });
-
-{
-  /* <TouchableOpacity
-style={{
-  height: 100,
-  width: 100,
-  backgroundColor: '#999',
-  borderRadius: 30,
-}}
-onPress={() => console.log('newsData', newsData)}></TouchableOpacity> */
-}
-
-// {/* News Tiles */}
-// <View style={styles.NewsTileLeft}>
-//   {item.multimedia !== null && (
-//     <Image
-//       source={{uri: item.multimedia[1].url}}
-//       style={{
-//         height: 100,
-//         width: 100,
-//       }}
-//     />
-//   )}
-//   {item.multimedia === null && (
-//     <Image
-//       source={{uri: 'https://picsum.photos/200/300'}}
-//       style={{
-//         height: 100,
-//         width: 100,
-//       }}
-//     />
-//   )}
-// </View>
-// <View style={styles.NewsTileRight}>
-//   <Text style={[texts.b18, {flexWrap: 'wrap'}]}>{item.title}</Text>
-//   <View style={[]}>
-//     <Text style={texts.b12}>{item.byline}</Text>
-//     <Text style={texts.b12}>Published: {item.created_date}</Text>
-//   </View>
-// </View>

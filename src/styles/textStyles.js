@@ -1,5 +1,8 @@
 import {StyleSheet} from 'react-native';
 
+const fontValue = 'Roboto-Regular'
+const colorValue = '#323aa8'
+
 export const texts = StyleSheet.create({
   // EXTRA STYLES
 
@@ -476,259 +479,259 @@ export const texts = StyleSheet.create({
 
   // Black Font Styles
   b8: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 8,
   },
   b9: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 9,
   },
   b10: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 10,
   },
   b11: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 11,
   },
   b12: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 12,
   },
   b13: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 13,
   },
   b14: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 14,
   },
   b15: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 15,
   },
   b16: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 16,
   },
   b17: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 17,
   },
   b18: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 18,
   },
   b19: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 19,
   },
   b20: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 20,
   },
   b22: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 22,
   },
   b24: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 24,
   },
   b28: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 28,
   },
   b32: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 32,
   },
   b48: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 48,
   },
 
   // White Font Styles
   w8: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 8,
     color: 'white',
   },
   w9: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 9,
     color: 'white',
   },
   w10: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 10,
     color: 'white',
   },
   w11: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 11,
     color: 'white',
   },
   w12: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 12,
     color: 'white',
   },
   w13: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 13,
     color: 'white',
   },
   w14: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 14,
     color: 'white',
   },
   w15: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 15,
     color: 'white',
   },
   w16: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 16,
     color: 'white',
   },
   w17: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 17,
     color: 'white',
   },
   w18: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 18,
     color: 'white',
   },
   w19: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 19,
     color: 'white',
   },
   w20: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 20,
     color: 'white',
   },
   w22: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 22,
     color: 'white',
   },
   w24: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 24,
     color: 'white',
   },
   w28: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 28,
     color: 'white',
   },
   w32: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 32,
     color: 'white',
   },
   w48: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 48,
     color: 'white',
   },
 
   // Color Font Styles
   c8: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 8,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c9: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 9,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c10: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 10,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c11: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 11,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c12: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 12,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c13: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 13,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c14: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 14,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c15: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 15,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c16: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 16,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c17: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 17,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c18: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 18,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c19: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 19,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c20: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 20,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c22: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 22,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c24: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 24,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c28: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 28,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c32: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 32,
-    color: '#1C3A5D',
+    color: colorValue,
   },
   c48: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: fontValue,
     fontSize: 48,
-    color: '#1C3A5D',
+    color: colorValue,
   },
 });

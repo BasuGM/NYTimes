@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   Image,
+  TextInput,
 } from 'react-native';
 import axios from 'axios';
 import {
@@ -16,7 +17,7 @@ import {
   Paragraph,
   ActivityIndicator,
   TouchableRipple,
-  TextInput,
+  Snackbar,
 } from 'react-native-paper';
 import {Icon} from 'react-native-elements';
 
@@ -27,12 +28,15 @@ const LeftContent = props => (
   <Avatar.Icon {...props} backgroundColor="#323aa8" icon="newspaper-variant" />
 );
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation}) => {
   const [newsData, setNewsData] = useState([]);
   const [section, setSection] = useState('home');
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [searchToggle, setSearchToggle] = useState(false);
+  const [defaultNewsData, setDefaultNewsData] = useState([]);
+  const [searchDone, setSearchDone] = useState(false);
+  const [snackBar, setSnackBar] = useState(false)
 
   useEffect(() => {
     setDefaultData();
@@ -47,6 +51,7 @@ const HomeScreen = () => {
       .then(function (response) {
         // handle success
         setNewsData(response.data.results);
+        setDefaultNewsData(response.data.results);
         // console.log('newsData', newsData);
         setLoading(false);
       })
@@ -73,6 +78,7 @@ const HomeScreen = () => {
         // handle success
         // console.log(response.data.results);
         setNewsData(response.data.results);
+        setDefaultNewsData(response.data.results);
         setLoading(false);
         setSection(section);
         // console.log('newsData', newsData);
@@ -87,22 +93,27 @@ const HomeScreen = () => {
   };
 
   const searchResults = () => {
-    console.log('Code Reachable')
-    // let resArr = [];
+    // setNewsData(defaultNewsData)
+    if (searchText === '') {
+      setSnackBar(true)
+    } else {
+      let resArr = [];
 
-    // for (let i = 0; i < newsData.length; i++) {
-    //   if (newsData[i].title.includes(searchText)) {
-    //     resArr.push(newsData[i]);
-    //   }
-    // }
+      for (let i = 0; i < newsData.length; i++) {
+        if (newsData[i].title.includes(searchText)) {
+          resArr.push(newsData[i]);
+        }
+      }
 
-    // setNewsData(resArr);
+      setNewsData(resArr);
+      setSearchDone(true);
+    }
   };
 
   const renderItem = ({item}) => {
     return (
       <TouchableRipple
-        onPress={() => console.log('Code Reachable')}
+        onPress={() => navigation.navigate('WebView', { newsArticle: item })}
         style={styles.Card}>
         <Card>
           <Card.Content>
@@ -174,41 +185,59 @@ const HomeScreen = () => {
           renderItem={item => renderItem2(item)}
           keyExtractor={item => item.id}
         />
-        <TouchableRipple
-          onPress={() => setSearchToggle(!searchToggle)}
-          style={styles.SearchIcon}>
-          <Icon name="search1" type="antdesign" color="#fff" size={24} />
-        </TouchableRipple>
+        {!searchToggle && (
+          <TouchableRipple
+            onPress={() => setSearchToggle(!searchToggle)}
+            style={styles.SearchIcon}>
+            <Icon name="search1" type="antdesign" color="#fff" size={24} />
+          </TouchableRipple>
+        )}
+        {searchToggle && (
+          <TouchableRipple
+            onPress={() => setSearchToggle(!searchToggle)}
+            style={styles.SearchIcon}>
+            <Icon name="caretup" type="antdesign" color="#fff" size={24} />
+          </TouchableRipple>
+        )}
       </View>
 
       {searchToggle && (
         <View style={styles.SearchBar}>
           <View style={styles.SearchBarInput}>
             <TextInput
-              mode="outlined"
-              label={'Search ' + section}
-              // style={{borderColor: '#323aa8'}}
-              selectionColor="#323aa8"
-              underlineColor="#323aa8"
-              outlineColor="#323aa8"
-              value={searchText}
+              style={styles.input}
               onChangeText={text => setSearchText(text)}
+              value={searchText}
+              placeholder={'Search ' + section}
+              placeholderTextColor="#999"
+            />
+            <Icon
+              onPress={() => {
+                setSearchText('');
+                setNewsData(defaultNewsData);
+                setSearchDone(false);
+              }}
+              name="backspace-outline"
+              type="ionicon"
+              color="#323aa8"
+              size={32}
             />
           </View>
           <Icon
-            onPress={searchResults()}
+            raised
+            onPress={() => searchResults()}
             name="search1"
             type="antdesign"
             color="#323aa8"
             size={24}
           />
-          <Icon
-            onPress={() => setSearchText('')}
-            name="backspace-outline"
-            type="ionicon"
-            color="#323aa8"
-            size={32}
-          />
+        </View>
+      )}
+      {searchDone && (
+        <View style={styles.SearchText}>
+          <Text style={texts.b16}>
+            Showing {newsData.length} results for: {searchText}
+          </Text>
         </View>
       )}
 
@@ -223,6 +252,14 @@ const HomeScreen = () => {
         renderItem={renderItem}
         keyExtractor={item => item.published_date}
       />
+      <Snackbar
+        visible={snackBar}
+        duration={1000}
+        onDismiss={() => setSnackBar(false)}
+        style={{bottom: 20}}
+        >
+        No text in search
+      </Snackbar>
     </View>
   );
 };
@@ -291,7 +328,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   SearchBarInput: {
-    width: '80%',
+    width: '85%',
+    borderWidth: 2,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderColor: '#323aa8',
+    marginRight: 5,
+  },
+  input: {
+    fontSize: 16,
+    color: '#000',
+  },
+  SearchText: {
+    // borderWidth: 1,
+    width: '100%',
+    paddingHorizontal: 20,
+    height: 30,
   },
 
   //   News Tiles
